@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
             title: const Text ("Bloc"),
             subtitle: Text('Gestor de estado BLOC'),
             trailing: const Icon(Icons.arrow_forward_ios_rounded),
-            onTap: () => context.push('/bloc'),
+            onTap: () => context.push('/counter-bloc'),
           )
         ],
       ),
