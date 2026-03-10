@@ -25,6 +25,12 @@ class HomeScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Divider(),
+          ),
+          ListTile(
+            title: const Text('User Screen'),
+            subtitle: const Text('Formulario'),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () => context.push('/new-user'),
           )
         ],
       ),
