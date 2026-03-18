@@ -9,6 +9,27 @@ class RegisterCubit extends Cubit<RegisterFormState> {
   RegisterCubit() : super(const RegisterFormState());
 
   void onSubmit() {
+
+    emit(
+      state.copyWith(
+        formStatus: FormStatus.validating,
+        username: Username.dirty(state.username.value),
+        lastname: Lastname.dirty(state.lastname.value),
+        enrollment: Enrollment.dirty(state.enrollment.value),
+        //email: Email.dirty(state.email.value),
+        password: Password.dirty(state.password.value),
+
+        isValid: Formz.validate([
+          state.username,
+          state.lastname,
+          state.enrollment,
+          //TODO: state.email,
+          state.password,
+        ])
+        
+      )
+    );
+
     print('Cubit submit: $state');
   }
 
