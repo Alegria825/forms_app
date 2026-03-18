@@ -7,30 +7,34 @@ enum FormStatus {invalid , valid, validating, posting }
 class RegisterFormState extends Equatable {
 
   final FormStatus formStatus;
-  final String username;
-  final String lastname;
+  final bool isValid;
+  final Username username;
+  final Lastname lastname;
   final String email;
-  final String enrollment;
-  final String password;
+  final Enrollment enrollment;
+  final Password password;
 
   const RegisterFormState({
-    this.formStatus = FormStatus.invalid, 
-    this.username = '', 
-    this.lastname = '', 
+    this.formStatus = FormStatus.invalid,
+    this.isValid = false,
+    this.username = const Username.pure(), 
+    this.lastname = const Lastname.pure(), 
     this.email = '', 
-    this.enrollment = '', 
-    this.password = ''
+    this.enrollment = const Enrollment.pure(), 
+    this.password = const Password.pure(),
     });
 
   RegisterFormState copyWith({
     FormStatus? formStatus,
-    String? username,
-    String? lastname,
+    bool? isValid,
+    Username? username,
+    Lastname? lastname,
     String? email,
-    String? enrollment,
-    String? password,
+    Enrollment? enrollment,
+    Password? password,
   }) => RegisterFormState(
     formStatus: formStatus  ?? this.formStatus,
+    isValid: isValid ?? this.isValid,
     username: username  ?? this.username,
     lastname: lastname  ?? this.lastname,
     email: email  ?? this.email,
@@ -40,6 +44,6 @@ class RegisterFormState extends Equatable {
 
 
   @override
-  List<Object> get props => [ formStatus, username, lastname, email, enrollment, password];
+  List<Object> get props => [ formStatus, isValid, username, lastname, email, enrollment, password];
 }
 
