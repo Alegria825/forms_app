@@ -50,87 +50,55 @@ class _TeacherRegisterForm extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final registerCubit = context.watch<RegisterCubit>();
+    final username = registerCubit.state.username;
+    final lastname = registerCubit.state.lastname;
+    final enrollment = registerCubit.state.enrollment;
+    final email = registerCubit.state.email;
+    final password = registerCubit.state.password;
 
     return Form(
       child: Column(
         children: [
           CustomTextFormField(
             label: 'Nombre',
-            onChanged: (value) {
-              registerCubit.usernameChanged(value);
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) return 'Campo requerido';
-              if (value.trim().isEmpty) return 'Campo requerido';
-              return null;
-            },
+            onChanged: registerCubit.usernameChanged,
+            errorMessage: username.errorMessage,
           ),
           SizedBox(height: 20),
 
           CustomTextFormField(
             label: 'Apellidos',
-            onChanged: (value) {
-              registerCubit.lastnameChanged(value);
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) return 'Campo requerido';
-              if (value.trim().isEmpty) return 'Campo requerido';
-              return null;
-            },
+            onChanged: registerCubit.lastnameChanged,
+            errorMessage: lastname.errorMessage,
           ),
           SizedBox(height: 20),
 
           CustomTextFormField(
             label: 'Matricula de profesor',
-            onChanged: (value) {
-              registerCubit.enrollmentChanged(value);
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) return 'Campo requerido';
-              if (value.trim().isEmpty) return 'Campo requerido';
-              if (value.length < 10) return 'Deben ser 10 digitos';
-              return null;
-            },
+            onChanged: registerCubit.enrollmentChanged,
+            errorMessage: enrollment.errorMessage,
           ),
           SizedBox(height: 20),
 
           CustomTextFormField(
             label: 'correo electronico',
-            onChanged: (value) {
-              registerCubit.emailChanged(value);
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) return 'Campo requerido';
-              if (value.trim().isEmpty) return 'Campo requerido';
-              final emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-
-              if (!emailRegExp.hasMatch(value)) return 'No tiene formato de correo';
-
-              return null;
-            },
+            onChanged: registerCubit.emailChanged,
+            errorMessage: email.errorMessage,
           ),
           SizedBox(height: 20),
 
           CustomTextFormField(
             label: 'contraseña',
             obscureText: true,
-            onChanged: (value) {
-              registerCubit.passwordChanged(value);
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) return 'Campo requerido';
-              if (value.trim().isEmpty) return 'Campo requerido';
-              if (value.length < 6) return 'Debe de contener mas de 6 caracteres';
-              return null;
-            },
+            onChanged: registerCubit.passwordChanged,
+            errorMessage: password.errorMessage,
           ),
       
           SizedBox(height: 50),
 
           FilledButton.tonalIcon(
             onPressed: () {
-              //final isValid = _formKey.currentState!.validate();
-              //if (!isValid) return;
+
               registerCubit.onSubmit();
 
             },
