@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:forms_app/presentation/widgets/widgets.dart';
+import 'package:forms_app/presentation/widgets/widgets.dart'; 
 
-class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({super.key});
+class TeacherRegisterScreen extends StatelessWidget {
+  const TeacherRegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Nuevo usuario")),
-      body: _RegisterView(),
+      appBar: AppBar(title: Text('Nuevo profesor'),),
+      body: _TeacherRegisterView(),
     );
   }
 }
 
-class _RegisterView extends StatelessWidget {
-  const _RegisterView();
+class _TeacherRegisterView extends StatelessWidget {
+  const _TeacherRegisterView();
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +26,9 @@ class _RegisterView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               const FlutterLogo(size: 100),
+              SizedBox(height: 40),               
 
-              _RegisterForm(),
-
-              SizedBox(height: 40),
+              _TeacherRegisterForm(),
             ],
           ),
         ),
@@ -38,21 +37,22 @@ class _RegisterView extends StatelessWidget {
   }
 }
 
-class _RegisterForm extends StatefulWidget {
-  const _RegisterForm();
+class _TeacherRegisterForm extends StatefulWidget {
+  const _TeacherRegisterForm();
 
   @override
-  State<_RegisterForm> createState() => _RegisterFormState();
+  State<_TeacherRegisterForm> createState() => _TeacherRegisterFormState();
 }
 
-class _RegisterFormState extends State<_RegisterForm> {
+class _TeacherRegisterFormState extends State<_TeacherRegisterForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String userName = '';
-  String lastName = '';
+  String username = '';
+  String lastname = '';
   String enrollment = '';
   String email = '';
   String password = '';
+
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class _RegisterFormState extends State<_RegisterForm> {
         children: [
           CustomTextFormField(
             label: 'Nombre',
-            onChanged: (value) => userName = value,
+            onChanged: (value) => username = value,
             validator: (value) {
               if (value == null || value.isEmpty) return 'Campo requerido';
               if (value.trim().isEmpty) return 'Campo requerido';
@@ -73,13 +73,24 @@ class _RegisterFormState extends State<_RegisterForm> {
 
           CustomTextFormField(
             label: 'Apellidos',
-            onChanged: (value) => lastName = value,
+            onChanged: (value) => lastname = value,
+            validator: (value) {
+              if (value == null || value.isEmpty) return 'Campo requerido';
+              if (value.trim().isEmpty) return 'Campo requerido';
+              return null;
+            },
           ),
           SizedBox(height: 20),
 
           CustomTextFormField(
-            label: 'Matricula',
+            label: 'Matricula de profesor',
             onChanged: (value) => enrollment = value,
+            validator: (value) {
+              if (value == null || value.isEmpty) return 'Campo requerido';
+              if (value.trim().isEmpty) return 'Campo requerido';
+              if (value.length < 9) return 'Deben ser 10 digitos';
+              return null;
+            },
           ),
           SizedBox(height: 20),
 
@@ -91,8 +102,7 @@ class _RegisterFormState extends State<_RegisterForm> {
               if (value.trim().isEmpty) return 'Campo requerido';
               final emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
 
-              if (!emailRegExp.hasMatch(value))
-                return 'No tiene formato de correo';
+              if (!emailRegExp.hasMatch(value)) return 'No tiene formato de correo';
 
               return null;
             },
@@ -110,16 +120,18 @@ class _RegisterFormState extends State<_RegisterForm> {
               return null;
             },
           ),
+      
+          SizedBox(height: 50),
 
           FilledButton.tonalIcon(
             onPressed: () {
               final isValid = _formKey.currentState!.validate();
               if (!isValid) return;
 
-              print('$userName, $lastName, $enrollment, $email, $password');
+              print('$username, $lastname, $enrollment, $email, $password');
             },
             icon: Icon(Icons.save),
-            label: Text('Crear usuario'),
+            label: Text('Crear profesor'),
           ),
         ],
       ),

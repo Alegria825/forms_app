@@ -1,3 +1,4 @@
+import 'package:forms_app/presentation/screens/teacher_register_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:forms_app/presentation/screens/screens.dart';
 
@@ -8,18 +9,23 @@ final appRouter = GoRouter(
       path: '/',
       builder:(context, state) => const HomeScreen(),
       ),
-      GoRoute(
+      /*GoRoute(
       path: '/cubits',
       builder:(context, state) => const CubitCounterScreen(),
       ),
       GoRoute(
       path: '/counter-bloc',
       builder:(context, state) => const BlocCounterScreen(),
+      ),*/
+      GoRoute(
+      path: '/new-student',
+      builder:(context, state) => const StudentRegisterScreen(),
       ),
       GoRoute(
-      path: '/new-user',
-      builder:(context, state) => const RegisterScreen(),
+      path: '/new-teacher',
+      builder:(context, state) => const TeacherRegisterScreen(),
       ),
+      
   ]
   
   

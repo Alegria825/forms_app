@@ -9,7 +9,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: ListView(
         children: [
-          ListTile(
+          /*ListTile(
             title: const Text('Cubits'),
             subtitle: Text('Gestor de estado simple'),
             trailing: const Icon(Icons.arrow_forward_ios_rounded),
@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
             subtitle: Text('Gestor de estado BLOC'),
             trailing: const Icon(Icons.arrow_forward_ios_rounded),
             onTap: () => context.push('/counter-bloc'),
-          ),
+          ),*/
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -30,7 +30,13 @@ class HomeScreen extends StatelessWidget {
             title: const Text('User Screen'),
             subtitle: const Text('Formulario'),
             trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () => context.push('/new-user'),
+            onTap: () => context.push('/new-student'),
+          ),
+          ListTile(
+            title: Text('Teacher screen'),
+            subtitle: Text('Teacher registration'),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () => context.push('/new-teacher'),
           )
         ],
       ),
