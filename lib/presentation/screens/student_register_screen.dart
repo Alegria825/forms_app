@@ -49,6 +49,7 @@ class _StudentRegisterForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final registerCubit = context.watch<RegisterCubit>();
     final username = registerCubit.state.username;
     final lastname = registerCubit.state.lastname;
@@ -62,36 +63,21 @@ class _StudentRegisterForm extends StatelessWidget {
           CustomTextFormField(
             label: 'Nombre',
             onChanged: registerCubit.usernameChanged,
-            errorMessage: username.isPure || username.isValid 
-            ? null
-            : 'Usuario no valido',
+            errorMessage: username.errorMessage,
           ),
           SizedBox(height: 20),
 
           CustomTextFormField(
             label: 'Apellidos',
-            onChanged: (value) {
-              registerCubit.lastnameChanged(value);
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) return 'Campo requerido';
-              if (value.trim().isEmpty) return 'Campo requerido';
-              return null;
-            },
+            onChanged: registerCubit.lastnameChanged,
+            errorMessage: lastname.errorMessage,
           ),
           SizedBox(height: 20),
 
           CustomTextFormField(
             label: 'Matricula',
-            onChanged: (value) {
-              registerCubit.enrollmentChanged(value);
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) return 'Campo requerido';
-              if (value.trim().isEmpty) return 'Campo requerido';
-              if (value.length < 9) return 'Deben ser 10 digitos';
-              return null;
-            },
+            onChanged: registerCubit.enrollmentChanged,
+            errorMessage: enrollment.errorMessage,
           ),
           SizedBox(height: 20),
 
@@ -115,15 +101,8 @@ class _StudentRegisterForm extends StatelessWidget {
           CustomTextFormField(
             label: 'contraseña',
             obscureText: true,
-            onChanged: (value) {
-              registerCubit.passwordChanged(value);
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) return 'Campo requerido';
-              if (value.trim().isEmpty) return 'Campo requerido';
-              if (value.length < 6) return 'Debe de contener mas de 6 caracteres';
-              return null;
-            },
+            onChanged: registerCubit.passwordChanged,
+            errorMessage: password.errorMessage,
           ),
 
           SizedBox(height: 50),

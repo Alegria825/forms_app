@@ -12,6 +12,15 @@ class Enrollment extends FormzInput<String, EnrollmentError> {
   // Call super.dirty to represent a modified form input.
   const Enrollment.dirty(String value) : super.dirty(value);
 
+  String? get errorMessage {
+
+    if (isValid || isPure) return null;
+    if (displayError == EnrollmentError.empty) return 'Campo requerido';
+    if (displayError == EnrollmentError.length) return 'Minimo 10 caracteres';
+
+    return null;
+  }
+
   // Override validator to handle validating a given input value.
   @override
   EnrollmentError? validator(String value) {
