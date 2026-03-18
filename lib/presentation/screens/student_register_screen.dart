@@ -11,9 +11,9 @@ class StudentRegisterScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text("Nuevo estudiante")),
       body: BlocProvider(
-        create: (context) => RegisterCubit(), 
+        create: (context) => RegisterCubit(),
         child: _StudentRegisterView(),
-        ),
+      ),
     );
   }
 }
@@ -49,12 +49,11 @@ class _StudentRegisterForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final registerCubit = context.watch<RegisterCubit>();
     final username = registerCubit.state.username;
     final lastname = registerCubit.state.lastname;
     final enrollment = registerCubit.state.enrollment;
-    //final email
+    final email = registerCubit.state.email;
     final password = registerCubit.state.password;
 
     return Form(
@@ -83,18 +82,8 @@ class _StudentRegisterForm extends StatelessWidget {
 
           CustomTextFormField(
             label: 'correo electronico',
-            onChanged: (value) {
-              registerCubit.emailChanged(value);
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) return 'Campo requerido';
-              if (value.trim().isEmpty) return 'Campo requerido';
-              final emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-
-              if (!emailRegExp.hasMatch(value)) return 'No tiene formato de correo';
-
-              return null;
-            },
+            onChanged: registerCubit.emailChanged,
+            errorMessage: email.errorMessage,
           ),
           SizedBox(height: 20),
 
@@ -109,7 +98,6 @@ class _StudentRegisterForm extends StatelessWidget {
 
           FilledButton.tonalIcon(
             onPressed: () {
-
               registerCubit.onSubmit();
             },
             icon: Icon(Icons.save),
