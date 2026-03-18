@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:forms_app/presentation/blocs/register_cubit/register_cubit.dart';
 import 'package:forms_app/presentation/widgets/widgets.dart'; 
 
 class TeacherRegisterScreen extends StatelessWidget {
@@ -8,7 +10,10 @@ class TeacherRegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Nuevo profesor'),),
-      body: _TeacherRegisterView(),
+      body: BlocProvider(
+        create: (context) => RegisterCubit(),
+        child:_TeacherRegisterView(),
+      )
     );
   }
 }
@@ -47,22 +52,28 @@ class _TeacherRegisterForm extends StatefulWidget {
 class _TeacherRegisterFormState extends State<_TeacherRegisterForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String username = '';
-  String lastname = '';
-  String enrollment = '';
-  String email = '';
-  String password = '';
+  //String username = '';
+  //String lastname = '';
+  //String enrollment = '';
+  //String email = '';
+  //String password = '';
 
 
   @override
   Widget build(BuildContext context) {
+
+    final registerCubit = context.watch<RegisterCubit>();
+
     return Form(
       key: _formKey,
       child: Column(
         children: [
           CustomTextFormField(
             label: 'Nombre',
-            onChanged: (value) => username = value,
+            onChanged: (value) {
+              registerCubit.usernameChanged(value);
+              _formKey.currentState?.validate();
+            },
             validator: (value) {
               if (value == null || value.isEmpty) return 'Campo requerido';
               if (value.trim().isEmpty) return 'Campo requerido';
@@ -73,7 +84,10 @@ class _TeacherRegisterFormState extends State<_TeacherRegisterForm> {
 
           CustomTextFormField(
             label: 'Apellidos',
-            onChanged: (value) => lastname = value,
+            onChanged: (value) {
+              registerCubit.lastnameChanged(value);
+              _formKey.currentState?.validate();
+            },
             validator: (value) {
               if (value == null || value.isEmpty) return 'Campo requerido';
               if (value.trim().isEmpty) return 'Campo requerido';
@@ -84,11 +98,14 @@ class _TeacherRegisterFormState extends State<_TeacherRegisterForm> {
 
           CustomTextFormField(
             label: 'Matricula de profesor',
-            onChanged: (value) => enrollment = value,
+            onChanged: (value) {
+              registerCubit.enrollmentChanged(value);
+              _formKey.currentState?.validate();
+            },
             validator: (value) {
               if (value == null || value.isEmpty) return 'Campo requerido';
               if (value.trim().isEmpty) return 'Campo requerido';
-              if (value.length < 9) return 'Deben ser 10 digitos';
+              if (value.length < 10) return 'Deben ser 10 digitos';
               return null;
             },
           ),
@@ -96,7 +113,10 @@ class _TeacherRegisterFormState extends State<_TeacherRegisterForm> {
 
           CustomTextFormField(
             label: 'correo electronico',
-            onChanged: (value) => email = value,
+            onChanged: (value) {
+              registerCubit.emailChanged(value);
+              _formKey.currentState?.validate();
+            },
             validator: (value) {
               if (value == null || value.isEmpty) return 'Campo requerido';
               if (value.trim().isEmpty) return 'Campo requerido';
@@ -112,7 +132,10 @@ class _TeacherRegisterFormState extends State<_TeacherRegisterForm> {
           CustomTextFormField(
             label: 'contraseña',
             obscureText: true,
-            onChanged: (value) => password = value,
+            onChanged: (value) {
+              registerCubit.passwordChanged(value);
+              _formKey.currentState?.validate();
+            },
             validator: (value) {
               if (value == null || value.isEmpty) return 'Campo requerido';
               if (value.trim().isEmpty) return 'Campo requerido';
@@ -128,7 +151,7 @@ class _TeacherRegisterFormState extends State<_TeacherRegisterForm> {
               final isValid = _formKey.currentState!.validate();
               if (!isValid) return;
 
-              print('$username, $lastname, $enrollment, $email, $password');
+            registerCubit.onSubmit();
             },
             icon: Icon(Icons.save),
             label: Text('Crear profesor'),
