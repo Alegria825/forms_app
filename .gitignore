@@ -43,3 +43,11 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Archivos de configuración de Firebase CLI
+.firebaserc
+firebase.json
+
+# Archivos sensibles de Android/iOS que FlutterFire pudo haber tocado
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
