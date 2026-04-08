@@ -18,13 +18,14 @@ final appRouter = GoRouter(
       builder:(context, state) => const BlocCounterScreen(),
       ),*/
       GoRoute(
-      path: '/new-student',
-      builder:(context, state) => const StudentRegisterScreen(),
-      ),
-      GoRoute(
       path: '/new-teacher',
       builder:(context, state) => const TeacherRegisterScreen(),
       ),
+      GoRoute(
+      path: '/new-student',
+      builder:(context, state) => const StudentRegisterScreen(),
+      ),
+
       
   ]
   
