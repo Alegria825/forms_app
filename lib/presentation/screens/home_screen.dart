@@ -21,22 +21,83 @@ class HomeScreen extends StatelessWidget {
             trailing: const Icon(Icons.arrow_forward_ios_rounded),
             onTap: () => context.push('/counter-bloc'),
           ),*/
+          const SizedBox(height: 30),
+          Image.asset(
+            'assets/logo.jpeg',
+            height: 200,
+            width: 150,
+          ),
+
+          const SizedBox( height: 20),
+
+          Center(
+            child: 
+            Column(
+              children: [
+              Text(
+                'Bienvenido',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)
+              ),
+              Text(
+                'Selecciona una opción',
+                style: TextStyle(fontSize: 18),
+              ),
+              ],
+            )
+          ),
+
+          const SizedBox(
+            height: 10),
+
+          
 
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Divider(),
+            
+            padding: const EdgeInsets.only(top: 100, right: 100, bottom: 50, left: 100),
+            child: ElevatedButton(
+              onPressed: () => context.push('/new-teacher'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF78DB78),
+                foregroundColor: Colors.white,
+                elevation: 4,
+                minimumSize: const Size(220, 55),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                ),
+              ),
+              child: const Text(
+                'Profesor',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
-          ListTile(
-            title: Text('Teacher screen'),
-            subtitle: Text('Teacher registration'),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () => context.push('/new-teacher'),
-          ),
-          ListTile(
-            title: const Text('User Screen'),
-            subtitle: const Text('Formulario'),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () => context.push('/new-student'),
+
+          const SizedBox(height: 50),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 100),
+            child: ElevatedButton(
+              onPressed: () => context.push('/new-student'),
+              style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF78DB78), 
+              foregroundColor: Colors.white,
+              elevation: 4,
+              minimumSize: const Size(220, 55), 
+              shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25),
+             ),
+            ),
+            child: const Text(
+              'Alumno',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            ),
           ),
           
         ],
