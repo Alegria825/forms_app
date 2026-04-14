@@ -3,6 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forms_app/presentation/blocs/register_cubit/register_cubit.dart';
 import 'package:forms_app/presentation/widgets/widgets.dart'; 
 
+//! PANTALLA DE FORMULARIO DE PROFESOR POR AGREGAR AL HOME-TEACHER
+
+
+
 class TeacherRegisterScreen extends StatelessWidget {
   const TeacherRegisterScreen({super.key});
 

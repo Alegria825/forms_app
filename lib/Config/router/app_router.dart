@@ -9,14 +9,6 @@ final appRouter = GoRouter(
       path: '/',
       builder:(context, state) => const HomeScreen(),
       ),
-      /*GoRoute(
-      path: '/cubits',
-      builder:(context, state) => const CubitCounterScreen(),
-      ),
-      GoRoute(
-      path: '/counter-bloc',
-      builder:(context, state) => const BlocCounterScreen(),
-      ),*/
       GoRoute(
       path: '/new-teacher',
       builder:(context, state) => const TeacherRegisterScreen(),
@@ -25,6 +17,15 @@ final appRouter = GoRouter(
       path: '/new-student',
       builder:(context, state) => const StudentRegisterScreen(),
       ),
+      GoRoute(
+      path: '/home-teacher',
+      builder:(context, state) => const HomeTeacherScreen(),
+      ),
+      GoRoute(
+      path: '/home-student',
+      builder:(context, state) => const HomeTeacherScreen(),
+      ),
+
 
       
   ]

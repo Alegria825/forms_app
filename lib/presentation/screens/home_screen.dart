@@ -9,18 +9,6 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: ListView(
         children: [
-          /*ListTile(
-            title: const Text('Cubits'),
-            subtitle: Text('Gestor de estado simple'),
-            trailing: const Icon(Icons.arrow_forward_ios_rounded),
-            onTap: () => context.push('/cubits'),
-          ),
-          ListTile(
-            title: const Text ("Bloc"),
-            subtitle: Text('Gestor de estado BLOC'),
-            trailing: const Icon(Icons.arrow_forward_ios_rounded),
-            onTap: () => context.push('/counter-bloc'),
-          ),*/
           const SizedBox(height: 30),
           Image.asset(
             'assets/logo.jpeg',
@@ -55,7 +43,7 @@ class HomeScreen extends StatelessWidget {
             
             padding: const EdgeInsets.only(top: 100, right: 100, bottom: 50, left: 100),
             child: ElevatedButton(
-              onPressed: () => context.push('/new-teacher'),
+              onPressed: () => context.push('/home-teacher'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF78DB78),
                 foregroundColor: Colors.white,
