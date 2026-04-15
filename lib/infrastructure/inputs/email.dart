@@ -17,7 +17,8 @@ class Email extends FormzInput<String, EmailError> {
     if (isValid || isPure) return null;
 
     if (displayError == EmailError.empty) return 'El campo es requerido';
-    if (displayError == EmailError.format) return 'No tiene formato de correo electronico';
+    if (displayError == EmailError.format)
+      return 'No tiene formato de correo electronico';
 
     return null;
   }
@@ -25,10 +26,9 @@ class Email extends FormzInput<String, EmailError> {
   // Override validator to handle validating a given input value.
   @override
   EmailError? validator(String value) {
-
     if (value.isEmpty || value.trim().isEmpty) return EmailError.empty;
     if (!emailRegExp.hasMatch(value)) return EmailError.format;
-    
+
     return null;
   }
 }

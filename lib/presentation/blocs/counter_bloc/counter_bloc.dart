@@ -23,7 +23,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
     emit(state.copyWith(counter: 0));
   }
 
-//*OTRA FORMA DE DISPARAR EVENTOS DENTRO DE BLOC
+  //*OTRA FORMA DE DISPARAR EVENTOS DENTRO DE BLOC
   void increaseBy([int value = 1]) {
     add(CounterIncreased(value));
   }

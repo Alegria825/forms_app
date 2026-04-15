@@ -1,11 +1,8 @@
 part of 'register_cubit.dart';
 
-
-enum FormStatus {invalid , valid, validating, posting }
-
+enum FormStatus { invalid, valid, validating, posting }
 
 class RegisterFormState extends Equatable {
-
   final FormStatus formStatus;
   final bool isValid;
   final Username username;
@@ -17,12 +14,12 @@ class RegisterFormState extends Equatable {
   const RegisterFormState({
     this.formStatus = FormStatus.invalid,
     this.isValid = false,
-    this.username = const Username.pure(), 
-    this.lastname = const Lastname.pure(), 
-    this.email = const Email.pure(), 
-    this.enrollment = const Enrollment.pure(), 
+    this.username = const Username.pure(),
+    this.lastname = const Lastname.pure(),
+    this.email = const Email.pure(),
+    this.enrollment = const Enrollment.pure(),
     this.password = const Password.pure(),
-    });
+  });
 
   RegisterFormState copyWith({
     FormStatus? formStatus,
@@ -33,17 +30,23 @@ class RegisterFormState extends Equatable {
     Enrollment? enrollment,
     Password? password,
   }) => RegisterFormState(
-    formStatus: formStatus  ?? this.formStatus,
+    formStatus: formStatus ?? this.formStatus,
     isValid: isValid ?? this.isValid,
-    username: username  ?? this.username,
-    lastname: lastname  ?? this.lastname,
-    email: email  ?? this.email,
-    enrollment: enrollment  ?? this.enrollment,
-    password: password  ?? this.password,    
+    username: username ?? this.username,
+    lastname: lastname ?? this.lastname,
+    email: email ?? this.email,
+    enrollment: enrollment ?? this.enrollment,
+    password: password ?? this.password,
   );
 
-
   @override
-  List<Object> get props => [ formStatus, isValid, username, lastname, email, enrollment, password];
+  List<Object> get props => [
+    formStatus,
+    isValid,
+    username,
+    lastname,
+    email,
+    enrollment,
+    password,
+  ];
 }
-

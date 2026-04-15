@@ -18,10 +18,7 @@ class BlocCounterView extends StatelessWidget {
     //context.read<CounterBloc>()
     //.add( CounterIncreased(value));
     context.read<CounterBloc>().increaseBy(value);
-
   }
-
-
 
   @override
   Widget build(BuildContext context) {

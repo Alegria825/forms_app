@@ -9,7 +9,6 @@ class RegisterCubit extends Cubit<RegisterFormState> {
   RegisterCubit() : super(const RegisterFormState());
 
   void onSubmit() {
-
     emit(
       state.copyWith(
         formStatus: FormStatus.validating,
@@ -24,68 +23,86 @@ class RegisterCubit extends Cubit<RegisterFormState> {
           state.enrollment,
           //TODO: state.email,
           state.password,
-        ])
-        
-      )
+        ]),
+      ),
     );
 
     print('Cubit submit: $state');
   }
 
-
-  void usernameChanged( String value ) {
+  void usernameChanged(String value) {
     final username = Username.dirty(value);
 
     emit(
       state.copyWith(
         username: username,
-        isValid: Formz.validate([ username, state.password])
-      )
+        isValid: Formz.validate([username, state.password]),
+      ),
     );
   }
 
-  void lastnameChanged( String value ) {
+  void lastnameChanged(String value) {
     final lastname = Lastname.dirty(value);
 
     emit(
       state.copyWith(
         lastname: lastname,
-        isValid: Formz.validate([lastname, state.username, state.password, state.enrollment])
-      )
+        isValid: Formz.validate([
+          lastname,
+          state.username,
+          state.password,
+          state.enrollment,
+        ]),
+      ),
     );
   }
 
-  void emailChanged( String value ) {
+  void emailChanged(String value) {
     final email = Email.dirty(value);
 
     emit(
       state.copyWith(
         email: email,
-        isValid: Formz.validate([email, state.username, state.lastname, state.enrollment, state.password])
-      )
+        isValid: Formz.validate([
+          email,
+          state.username,
+          state.lastname,
+          state.enrollment,
+          state.password,
+        ]),
+      ),
     );
   }
 
-  void enrollmentChanged( String value ) {
+  void enrollmentChanged(String value) {
     final enrollment = Enrollment.dirty(value);
 
     emit(
       state.copyWith(
         enrollment: enrollment,
-        isValid: Formz.validate([enrollment, state.username, state.lastname, state.password])
-      )
+        isValid: Formz.validate([
+          enrollment,
+          state.username,
+          state.lastname,
+          state.password,
+        ]),
+      ),
     );
   }
 
-  void passwordChanged( String value ) {
+  void passwordChanged(String value) {
     final password = Password.dirty(value);
 
     emit(
       state.copyWith(
         password: password,
-        isValid: Formz.validate([password, state.username, state.enrollment, state.lastname])
-      )
+        isValid: Formz.validate([
+          password,
+          state.username,
+          state.enrollment,
+          state.lastname,
+        ]),
+      ),
     );
   }
-
 }

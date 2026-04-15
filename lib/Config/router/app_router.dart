@@ -4,31 +4,22 @@ import 'package:forms_app/presentation/screens/screens.dart';
 
 final appRouter = GoRouter(
   routes: [
-
+    GoRoute(path: '/', builder: (context, state) => const HomeScreen()),
     GoRoute(
-      path: '/',
-      builder:(context, state) => const HomeScreen(),
-      ),
-      GoRoute(
       path: '/new-teacher',
-      builder:(context, state) => const TeacherRegisterScreen(),
-      ),
-      GoRoute(
+      builder: (context, state) => const TeacherRegisterScreen(),
+    ),
+    GoRoute(
       path: '/new-student',
-      builder:(context, state) => const StudentRegisterScreen(),
-      ),
-      GoRoute(
+      builder: (context, state) => const StudentRegisterScreen(),
+    ),
+    GoRoute(
       path: '/home-teacher',
-      builder:(context, state) => const HomeTeacherScreen(),
-      ),
-      GoRoute(
+      builder: (context, state) => const HomeTeacherScreen(),
+    ),
+    GoRoute(
       path: '/home-student',
-      builder:(context, state) => const HomeTeacherScreen(),
-      ),
-
-
-      
-  ]
-  
-  
-  );
+      builder: (context, state) => const HomeTeacherScreen(),
+    ),
+  ],
+);

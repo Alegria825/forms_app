@@ -1,4 +1,3 @@
-
 import 'package:formz/formz.dart';
 
 // Define input validation errors
@@ -24,7 +23,6 @@ class Password extends FormzInput<String, PasswordError> {
   // Override validator to handle validating a given input value.
   @override
   PasswordError? validator(String value) {
-    
     if (value.isEmpty || value.trim().isEmpty) return PasswordError.empty;
     if (value.length < 6) return PasswordError.length;
 

@@ -1,4 +1,3 @@
-
 import 'package:formz/formz.dart';
 
 // Define input validation errors
@@ -13,7 +12,6 @@ class Enrollment extends FormzInput<String, EnrollmentError> {
   const Enrollment.dirty(String value) : super.dirty(value);
 
   String? get errorMessage {
-
     if (isValid || isPure) return null;
     if (displayError == EnrollmentError.empty) return 'Campo requerido';
     if (displayError == EnrollmentError.length) return 'Minimo 10 caracteres';
@@ -24,7 +22,6 @@ class Enrollment extends FormzInput<String, EnrollmentError> {
   // Override validator to handle validating a given input value.
   @override
   EnrollmentError? validator(String value) {
-    
     if (value.length < 10) return EnrollmentError.length;
     if (value.isEmpty || value.trim().isEmpty) return EnrollmentError.empty;
 

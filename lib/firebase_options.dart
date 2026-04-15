@@ -65,5 +65,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'qr-university.firebasestorage.app',
     iosBundleId: 'com.example.formsApp',
   );
-
 }

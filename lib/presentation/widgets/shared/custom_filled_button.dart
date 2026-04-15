@@ -6,10 +6,10 @@ class CustomFilledButton extends StatelessWidget {
   final Color? color;
 
   const CustomFilledButton({
-    super.key, 
-    required this.text, 
-    this.onPressed, 
-    this.color
+    super.key,
+    required this.text,
+    this.onPressed,
+    this.color,
   });
 
   @override
@@ -19,7 +19,7 @@ class CustomFilledButton extends StatelessWidget {
 
     return SizedBox(
       width: double.infinity, // Para que ocupe todo el ancho disponible
-      height: 60,            // Altura similar a tu diseño
+      height: 60, // Altura similar a tu diseño
       child: FilledButton(
         style: FilledButton.styleFrom(
           backgroundColor: buttonColor,
@@ -32,9 +32,9 @@ class CustomFilledButton extends StatelessWidget {
         child: Text(
           text,
           style: const TextStyle(
-            fontSize: 18, 
+            fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Colors.white
+            color: Colors.white,
           ),
         ),
       ),

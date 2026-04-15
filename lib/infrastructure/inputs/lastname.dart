@@ -1,7 +1,7 @@
 import 'package:formz/formz.dart';
 
 // Define input validation errors
-enum LastnameError { empty}
+enum LastnameError { empty }
 
 // Extend FormzInput and provide the input type and error type.
 class Lastname extends FormzInput<String, LastnameError> {
@@ -23,7 +23,6 @@ class Lastname extends FormzInput<String, LastnameError> {
   // Override validator to handle validating a given input value.
   @override
   LastnameError? validator(String value) {
-    
     if (value.isEmpty || value.trim().isEmpty) return LastnameError.empty;
 
     return null;

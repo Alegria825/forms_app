@@ -10,38 +10,31 @@ class HomeScreen extends StatelessWidget {
       body: ListView(
         children: [
           const SizedBox(height: 30),
-          Image.asset(
-            'assets/logo.jpeg',
-            height: 200,
-            width: 150,
-          ),
+          Image.asset('assets/logo.jpeg', height: 200, width: 150),
 
-          const SizedBox( height: 20),
+          const SizedBox(height: 20),
 
           Center(
-            child: 
-            Column(
+            child: Column(
               children: [
-              Text(
-                'Bienvenido',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)
-              ),
-              Text(
-                'Selecciona una opción',
-                style: TextStyle(fontSize: 18),
-              ),
+                Text(
+                  'Bienvenido',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                Text('Selecciona una opción', style: TextStyle(fontSize: 18)),
               ],
-            )
+            ),
           ),
 
-          const SizedBox(
-            height: 10),
-
-          
+          const SizedBox(height: 10),
 
           Padding(
-            
-            padding: const EdgeInsets.only(top: 100, right: 100, bottom: 50, left: 100),
+            padding: const EdgeInsets.only(
+              top: 100,
+              right: 100,
+              bottom: 50,
+              left: 100,
+            ),
             child: ElevatedButton(
               onPressed: () => context.push('/home-teacher'),
               style: ElevatedButton.styleFrom(
@@ -55,10 +48,7 @@ class HomeScreen extends StatelessWidget {
               ),
               child: const Text(
                 'Profesor',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -70,24 +60,20 @@ class HomeScreen extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () => context.push('/new-student'),
               style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF78DB78), 
-              foregroundColor: Colors.white,
-              elevation: 4,
-              minimumSize: const Size(220, 55), 
-              shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-             ),
-            ),
-            child: const Text(
-              'Alumno',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold
+                backgroundColor: const Color(0xFF78DB78),
+                foregroundColor: Colors.white,
+                elevation: 4,
+                minimumSize: const Size(220, 55),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                ),
+              ),
+              child: const Text(
+                'Alumno',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
-            ),
           ),
-          
         ],
       ),
     );
