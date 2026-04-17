@@ -12,7 +12,7 @@ class FirebaseAuthDatasource extends AuthDatasource {
     try {
       // Reemplaza esto con el ID que copiaste de Firebase
       const String webClientId =
-          'TU_ID_DE_CLIENTE_WEB.apps.googleusercontent.com';
+          '894417417950-u5rfvog3u5pdfk4jn6amnhdt6q6t6esg.apps.googleusercontent.com';
 
       await _googleSignIn.initialize(
         serverClientId:
@@ -27,7 +27,9 @@ class FirebaseAuthDatasource extends AuthDatasource {
           await googleUser.authentication;
 
       // Para obtener el accessToken en v7+
-      final authz = await googleUser.authorizationClient.authorizeScopes([]);
+      final authz = await googleUser.authorizationClient.authorizeScopes([
+        'email'
+        ]);
 
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: authz.accessToken,

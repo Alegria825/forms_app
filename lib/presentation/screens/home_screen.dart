@@ -58,7 +58,7 @@ class HomeScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 100),
             child: ElevatedButton(
-              onPressed: () => context.push('/new-student'),
+              onPressed: () => context.push('/home-student'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF78DB78),
                 foregroundColor: Colors.white,

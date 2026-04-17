@@ -1,4 +1,3 @@
-import 'package:forms_app/presentation/screens/teacher_register_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:forms_app/presentation/screens/screens.dart';
 
@@ -21,5 +20,10 @@ final appRouter = GoRouter(
       path: '/home-student',
       builder: (context, state) => const HomeTeacherScreen(),
     ),
+    GoRoute(
+      path: '/classroom-teacher',
+      builder: (context, state) => const ClassroomTeacher(),
+    ),
+
   ],
 );

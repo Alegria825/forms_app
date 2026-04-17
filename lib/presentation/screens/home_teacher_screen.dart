@@ -59,8 +59,8 @@ class _TeacherView extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('¡Bienvenido $userName!')),
                     );
-                    // Aquí podrías navegar a la pantalla de asistencias
-                    // context.push('/asistencias');
+                    //*Una vez autenticado, podrías navegar a la pantalla de asistencias o al dashboard del profesor
+                    context.push('/classroom-teacher');
                   }
                 } catch (e) {
                   // Manejo de errores visual
@@ -68,6 +68,7 @@ class _TeacherView extends StatelessWidget {
                     SnackBar(content: Text('Error al autenticar: $e')),
                   );
                   print('error: $e');
+
                 }
               },
             ),
