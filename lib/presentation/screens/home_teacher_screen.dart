@@ -1,84 +1,118 @@
 import 'package:flutter/material.dart';
-import 'package:forms_app/presentation/widgets/shared/custom_filled_auth_button.dart';
-// Asegúrate de importar tu carpeta de widgets
-import 'package:forms_app/infrastructure/datasources/firebase_auth_datasource.dart';
-import 'package:forms_app/infrastructure/repositories/auth_repository_impl.dart';
-
-import 'package:forms_app/presentation/widgets/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:forms_app/presentation/blocs/auth_cubit/auth_cubit.dart';
 
 class HomeTeacherScreen extends StatelessWidget {
   const HomeTeacherScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Obtenemos el nombre del profesor desde el Cubit
+    final user = context.watch<AuthCubit>().state.user;
+    final String professorName = user?.name ?? 'Profesor';
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Profesor")),
-      body: const _TeacherView(),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: const Text("Panel de Control", style: TextStyle(color: Colors.black)),
+        actions: [
+          // Botón para cerrar sesión y volver al login (fácil testeo)
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.red),
+            onPressed: () {
+              context.read<AuthCubit>().logout();
+            },
+          )
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 10),
+            Text(
+              "Hola $professorName",
+              style: const TextStyle(
+                fontSize: 28, 
+                fontWeight: FontWeight.bold,
+                color: Colors.black87
+              ),
+            ),
+            const SizedBox(height: 30),
+            
+            // Sección de Aulas (Grid)
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: 2, // Dos columnas como en el PDF
+                crossAxisSpacing: 20,
+                mainAxisSpacing: 20,
+                children: [
+                  // Estas son tarjetas de ejemplo, luego vendrán de la base de datos
+                  _ClassroomCard(grade: '4', group: 'O', color: Colors.teal[300]!),
+                  _ClassroomCard(grade: '2', group: 'M', color: Colors.blue[300]!),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      // Botón para crear nueva aula (Página 4 del PDF)
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue[800],
+        child: const Icon(Icons.add, color: Colors.white),
+        onPressed: () {
+          // TODO: Navegar a la pantalla de crear aula
+          // context.push('/new-classroom'); 
+        },
+      ),
     );
   }
 }
 
-class _TeacherView extends StatelessWidget {
-  const _TeacherView();
+class _ClassroomCard extends StatelessWidget {
+  final String grade;
+  final String group;
+  final Color color;
+
+  const _ClassroomCard({
+    required this.grade, 
+    required this.group, 
+    required this.color
+  });
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 30,
-        ), // Más padding para que se vea como el diseño
-        child: ListView(
-          children:[ Column(
-            mainAxisAlignment: MainAxisAlignment.center, // Centrado vertical
-            children: [
-              const Text(
-                "Autenticación requerida",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(height: 30),
-              Image.asset('assets/googlelogo.png', height: 24, width: 24),
-              const SizedBox(height: 20),
-
-          
-              // USANDO TU NUEVO BOTÓN GLOBAL
-              CustomFilledAuthButton(
-                text: 'Autentificarse con Google',
-                //icon: Icons.login,
-                image: Image.asset('assets/googlelogo.png', height: 24, width: 24),
-                onPressed: () async {
-                  // 2. Preparamos el repositorio (esto luego lo hará un Provider o Bloc)
-                  final authRepository = AuthRepositoryImpl(
-                    FirebaseAuthDatasource(),
-                  );
-                  try {
-                    // 3. Llamamos al login
-                    final userCredential = await authRepository.loginWithGoogle();
-                    if (userCredential != null) {
-                      // ¡ÉXITO!
-                      final userName =
-                          userCredential.user?.displayName ?? 'Usuario';
-          
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('¡Bienvenido $userName!')),
-                      );
-                      //*Una vez autenticado, podrías navegar a la pantalla de asistencias o al dashboard del profesor
-                      context.push('/classroom-teacher');
-                    }
-                  } catch (e) {
-                    // Manejo de errores visual
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Error al autenticar: $e')),
-                    );
-                    print('error: $e');
-          
-                  }
-                },
-              ),
-            ],
+    return InkWell(
+      onTap: () {
+        // Al tocar, navegamos al detalle del aula (Página 3 del PDF)
+        context.push('/classroom-detail');
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: color.withOpacity(0.3),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            )
+          ],
+        ),
+        child: Center(
+          child: Text(
+            "$grade-$group",
+            style: const TextStyle(
+              fontSize: 35, 
+              fontWeight: FontWeight.bold, 
+              color: Colors.white
+            ),
           ),
-        ]),
+        ),
       ),
     );
   }

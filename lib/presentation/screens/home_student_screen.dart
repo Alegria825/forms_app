@@ -1,74 +1,109 @@
 import 'package:flutter/material.dart';
-import 'package:forms_app/infrastructure/datasources/firebase_auth_datasource.dart';
-import 'package:forms_app/infrastructure/repositories/auth_repository_impl.dart';
-import 'package:forms_app/presentation/widgets/shared/custom_filled_auth_button.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:forms_app/presentation/blocs/auth_cubit/auth_cubit.dart';
 
 class HomeStudentScreen extends StatelessWidget {
   const HomeStudentScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Obtenemos los datos del alumno desde el Cubit
+    final user = context.watch<AuthCubit>().state.user;
+    final String studentName = user?.name.split(' ')[0] ?? 'Estudiante';
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Estudiante")),
-      body: const _StudentView(),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        actions: [
+          // Botón de logout para pruebas
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.grey),
+            onPressed: () => context.read<AuthCubit>().logout(),
+          )
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20),
+            Text(
+              "Hola $studentName",
+              style: const TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              "¿Listo para registrar tu asistencia?",
+              style: TextStyle(fontSize: 16, color: Colors.black54),
+            ),
+            
+            const Spacer(), // Empuja el contenido al centro
+            
+            Center(
+              child: Column(
+                children: [
+                  _ScannerButton(
+                    onPressed: () {
+                      // TODO: Navegar a la pantalla del escáner QR
+                      // context.push('/scan-qr');
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    "Escanear QR",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            
+            const Spacer(flex: 2), // Espacio extra abajo para equilibrio visual
+          ],
+        ),
+      ),
     );
   }
 }
 
-class _StudentView extends StatelessWidget {
-  const _StudentView();
+class _ScannerButton extends StatelessWidget {
+  final VoidCallback onPressed;
 
- @override
+  const _ScannerButton({required this.onPressed});
+
+  @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 30,
-        ), // Más padding para que se vea como el diseño
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // Centrado vertical
-          children: [
-            const Text(
-              "Autenticación requerida",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(height: 30),
-
-            // USANDO TU NUEVO BOTÓN GLOBAL
-            CustomFilledAuthButton(
-              text: 'Autentificarse con Google',
-              icon: Icons.login,
-              onPressed: () async {
-                //TODO: IMPLEMENTAR METODO DE LOGIN CON GOOGLE
-                // 2. Preparamos el repositorio (esto luego lo hará un Provider o Bloc)
-                final authRepository = AuthRepositoryImpl(
-                  FirebaseAuthDatasource(),
-                );
-                try {
-                  // 3. Llamamos al login
-                  final userCredential = await authRepository.loginWithGoogle();
-                  if (userCredential != null) {
-                    // ¡ÉXITO!
-                    final userName =
-                        userCredential.user?.displayName ?? 'Usuario';
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('¡Bienvenido $userName!')),
-                    );
-                    // Aquí podrías navegar a la pantalla de asistencias
-                    // context.push('/asistencias');
-                  }
-                } catch (e) {
-                  // Manejo de errores visual
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Error al autenticar: $e')),
-                  );
-                  print('error: $e');
-                }
-              },
-            ),
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        width: 180,
+        height: 180,
+        decoration: BoxDecoration(
+          color: Colors.blue[50], // Fondo suave
+          borderRadius: BorderRadius.circular(40),
+          border: Border.all(color: Colors.blue[100]!, width: 2),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.blue.withOpacity(0.1),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            )
           ],
+        ),
+        child: Icon(
+          Icons.qr_code_scanner_rounded,
+          size: 100,
+          color: Colors.blue[800],
         ),
       ),
     );

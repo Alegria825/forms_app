@@ -1,5 +1,5 @@
 
-
+/*
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class AuthDatasource {
@@ -7,20 +7,19 @@ abstract class AuthDatasource {
 
   //TODO: Aquí podrías agregar en el futuro: Future<void> logout();
 }
+*/
 
-
-/*
-import 'package:forms_app/domain/entities/user.dart';
+import 'package:forms_app/domain/entities/user_entity.dart';
 
 abstract class AuthDataSource {
   /// Revisa si ya hay una sesión activa y trae los datos de Firestore
-  Future<User?> getCurrentUser();
+  Future<UserEntity?> getCurrentUser();
   
   /// Inicia sesión con Google y maneja la lógica de la Whitelist
-  Future<User> signInWithGoogle();
+  Future<UserEntity> signInWithGoogle();
   
   /// Cierra la sesión
   Future<void> signOut();
 }
 
-*/
+
