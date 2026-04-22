@@ -1,9 +1,13 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:forms_app/domain/datasources/auth_datasource.dart';
 
 class FirebaseAuthDatasource extends AuthDatasource {
+  
   final FirebaseAuth _auth = FirebaseAuth.instance;
+ // final Stream<User?> authStateChanges = FirebaseAuth.instance.authStateChanges(); // CAMBIO 1: Instancia estática de FirebaseAuth
+
   // CAMBIO 1: Usar la instancia estática en lugar del constructor
   final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
 
@@ -43,3 +47,4 @@ class FirebaseAuthDatasource extends AuthDatasource {
     }
   }
 }
+

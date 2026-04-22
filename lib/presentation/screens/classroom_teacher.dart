@@ -22,13 +22,14 @@ class _ClassroomView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Aulas del profesor'),
+            //Text('Aulas del profesor'),
             ElevatedButton(
               onPressed: () {
                 // Aquí puedes agregar la lógica para crear una nueva aula
               },
-              child: Text('Ver aulas existentes'),
+              child: Text('Ver salones existentes'),
             ),
+              SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
                 // Aquí puedes agregar la lógica para gestionar las aulas existentes

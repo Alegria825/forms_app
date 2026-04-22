@@ -4,12 +4,14 @@ class CustomFilledAuthButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;
   final IconData? icon;
+  final Image? image;
 
   const CustomFilledAuthButton({
     super.key,
     required this.text,
     this.onPressed,
     this.icon,
+    this.image,
   });
 
   @override

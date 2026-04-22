@@ -29,51 +29,56 @@ class _TeacherView extends StatelessWidget {
         padding: const EdgeInsets.symmetric(
           horizontal: 30,
         ), // Más padding para que se vea como el diseño
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // Centrado vertical
-          children: [
-            const Text(
-              "Autenticación requerida",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(height: 30),
+        child: ListView(
+          children:[ Column(
+            mainAxisAlignment: MainAxisAlignment.center, // Centrado vertical
+            children: [
+              const Text(
+                "Autenticación requerida",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(height: 30),
+              Image.asset('assets/googlelogo.png', height: 24, width: 24),
+              const SizedBox(height: 20),
 
-            // USANDO TU NUEVO BOTÓN GLOBAL
-            CustomFilledAuthButton(
-              text: 'Autentificarse con Google',
-              icon: Icons.login,
-              onPressed: () async {
-                //TODO: IMPLEMENTAR METODO DE LOGIN CON GOOGLE
-                // 2. Preparamos el repositorio (esto luego lo hará un Provider o Bloc)
-                final authRepository = AuthRepositoryImpl(
-                  FirebaseAuthDatasource(),
-                );
-                try {
-                  // 3. Llamamos al login
-                  final userCredential = await authRepository.loginWithGoogle();
-                  if (userCredential != null) {
-                    // ¡ÉXITO!
-                    final userName =
-                        userCredential.user?.displayName ?? 'Usuario';
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('¡Bienvenido $userName!')),
-                    );
-                    //*Una vez autenticado, podrías navegar a la pantalla de asistencias o al dashboard del profesor
-                    context.push('/classroom-teacher');
-                  }
-                } catch (e) {
-                  // Manejo de errores visual
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Error al autenticar: $e')),
+          
+              // USANDO TU NUEVO BOTÓN GLOBAL
+              CustomFilledAuthButton(
+                text: 'Autentificarse con Google',
+                //icon: Icons.login,
+                image: Image.asset('assets/googlelogo.png', height: 24, width: 24),
+                onPressed: () async {
+                  // 2. Preparamos el repositorio (esto luego lo hará un Provider o Bloc)
+                  final authRepository = AuthRepositoryImpl(
+                    FirebaseAuthDatasource(),
                   );
-                  print('error: $e');
-
-                }
-              },
-            ),
-          ],
-        ),
+                  try {
+                    // 3. Llamamos al login
+                    final userCredential = await authRepository.loginWithGoogle();
+                    if (userCredential != null) {
+                      // ¡ÉXITO!
+                      final userName =
+                          userCredential.user?.displayName ?? 'Usuario';
+          
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('¡Bienvenido $userName!')),
+                      );
+                      //*Una vez autenticado, podrías navegar a la pantalla de asistencias o al dashboard del profesor
+                      context.push('/classroom-teacher');
+                    }
+                  } catch (e) {
+                    // Manejo de errores visual
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Error al autenticar: $e')),
+                    );
+                    print('error: $e');
+          
+                  }
+                },
+              ),
+            ],
+          ),
+        ]),
       ),
     );
   }
