@@ -26,6 +26,7 @@ class AuthRepositoryImpl implements AuthRepository {
     return dataSource.signOut();
   }
 
+  @override
   Future<void> updateStudentData({
   required String uid, 
   required String name, 
@@ -46,5 +47,3 @@ class AuthRepositoryImpl implements AuthRepository {
 
 }
 
-
-// En tu AuthRepository o AuthRepositoryImpl

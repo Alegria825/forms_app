@@ -22,4 +22,6 @@ abstract class AuthRepository {
     required String name, 
     required String enrollment
   });
+
+  //Future<void> 
 }

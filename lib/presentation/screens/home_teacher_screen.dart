@@ -1,14 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:forms_app/domain/entities/classroom.dart';
 import 'package:go_router/go_router.dart';
 import 'package:forms_app/presentation/blocs/auth_cubit/auth_cubit.dart';
+// Importa tu entidad Classroom aquí
 
 class HomeTeacherScreen extends StatelessWidget {
   const HomeTeacherScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Obtenemos el nombre del profesor desde el Cubit
     final user = context.watch<AuthCubit>().state.user;
     final String professorName = user?.name ?? 'Profesor';
 
@@ -19,12 +21,9 @@ class HomeTeacherScreen extends StatelessWidget {
         elevation: 0,
         title: const Text("Panel de Control", style: TextStyle(color: Colors.black)),
         actions: [
-          // Botón para cerrar sesión y volver al login (fácil testeo)
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.red),
-            onPressed: () {
-              context.read<AuthCubit>().logout();
-            },
+            onPressed: () => context.read<AuthCubit>().logout(),
           )
         ],
       ),
@@ -36,81 +35,91 @@ class HomeTeacherScreen extends StatelessWidget {
             const SizedBox(height: 10),
             Text(
               "Hola $professorName",
-              style: const TextStyle(
-                fontSize: 28, 
-                fontWeight: FontWeight.bold,
-                color: Colors.black87
-              ),
+              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 30),
             
-            // Sección de Aulas (Grid)
+            // LISTA DINÁMICA DE AULAS
             Expanded(
-              child: GridView.count(
-                crossAxisCount: 2, // Dos columnas como en el PDF
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 20,
-                children: [
-                  // Estas son tarjetas de ejemplo, luego vendrán de la base de datos
-                  _ClassroomCard(grade: '4', group: 'O', color: Colors.teal[300]!),
-                  _ClassroomCard(grade: '2', group: 'M', color: Colors.blue[300]!),
-                ],
+              child: StreamBuilder<QuerySnapshot>(
+                // Escuchamos solo las aulas de ESTE profesor
+                stream: FirebaseFirestore.instance
+                    .collection('classrooms')
+                    .where('professorId', isEqualTo: user?.uid)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) return const Text('Error al cargar');
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  final docs = snapshot.data!.docs;
+
+                  if (docs.isEmpty) {
+                    return const Center(child: 
+                    Text("No tienes aulas creadas.", 
+                    style: TextStyle(fontSize: 18)
+                    )
+                    );
+                  }
+
+                  return GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 20,
+                    ),
+                    itemCount: docs.length,
+                    itemBuilder: (context, index) {
+                      final classroom = Classroom.fromFirestore(
+                        docs[index].data() as Map<String, dynamic>,
+                        docs[index].id
+                      );
+
+                      return _ClassroomCard(
+                        classroom: classroom,
+                        // Alternamos colores para que se vea como tu diseño
+                        color: index % 2 == 0 ? Colors.teal[300]! : Colors.blue[300]!,
+                      );
+                    },
+                  );
+                },
               ),
             ),
           ],
         ),
       ),
-      // Botón para crear nueva aula (Página 4 del PDF)
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue[800],
         child: const Icon(Icons.add, color: Colors.white),
-        onPressed: () {
-          // TODO: Navegar a la pantalla de crear aula
-          // context.push('/new-classroom'); 
-        },
+        onPressed: () => context.push('/new-classroom'), 
       ),
     );
   }
 }
 
 class _ClassroomCard extends StatelessWidget {
-  final String grade;
-  final String group;
+  final Classroom classroom;
   final Color color;
 
-  const _ClassroomCard({
-    required this.grade, 
-    required this.group, 
-    required this.color
-  });
+  const _ClassroomCard({required this.classroom, required this.color});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // Al tocar, navegamos al detalle del aula (Página 3 del PDF)
-        context.push('/classroom-detail');
+        context.push('/classroom-detail', extra: classroom);
       },
       child: Container(
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: color.withOpacity(0.3),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            )
-          ],
         ),
         child: Center(
           child: Text(
-            "$grade-$group",
-            style: const TextStyle(
-              fontSize: 35, 
-              fontWeight: FontWeight.bold, 
-              color: Colors.white
-            ),
+            // Concatenamos grado y grupo aquí
+            "${classroom.grade}-${classroom.group}", 
+            style: const TextStyle(fontSize: 35, fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ),
       ),

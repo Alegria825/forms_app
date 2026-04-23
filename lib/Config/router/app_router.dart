@@ -1,5 +1,8 @@
+import 'package:forms_app/domain/entities/classroom.dart';
 import 'package:forms_app/presentation/blocs/auth_cubit/auth_cubit.dart';
 import 'package:forms_app/presentation/blocs/auth_cubit/auth_state.dart';
+import 'package:forms_app/presentation/screens/classroom_deteail_screen.dart';
+import 'package:forms_app/presentation/screens/new_classroom_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:forms_app/presentation/screens/screens.dart';
 import 'dart:async';
@@ -25,7 +28,8 @@ GoRouter createRouter(AuthCubit authCubit) {
         final user = authState.user!;
 
         // 1. REGLA DE ORO: Si es estudiante y le falta la matrícula, bloquearlo.
-        final isStudentWithoutEnrollment = user.role == 'student' && 
+        final isStudentWithoutEnrollment =
+            user.role == 'student' &&
             (user.enrollment == null || user.enrollment!.isEmpty);
 
         if (isStudentWithoutEnrollment) {
@@ -61,6 +65,17 @@ GoRouter createRouter(AuthCubit authCubit) {
       GoRoute(
         path: '/classroom-teacher',
         builder: (context, state) => const ClassroomTeacher(),
+      ),
+      GoRoute(
+        path: '/new-classroom',
+        builder: (context, state) => const NewClassroomScreen(),
+      ),
+      GoRoute(
+        path: '/classroom-detail',
+        builder: (context, state) {
+          final classroom = state.extra as Classroom;
+          return ClassroomDetailScreen(classroom: classroom);
+        },
       ),
     ],
   );
