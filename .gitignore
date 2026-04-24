@@ -23,6 +23,15 @@ migrate_working_dir/
 # is commented out by default.
 #.vscode/
 
+# Android signing keys
+*.jks
+*.keystore
+android/key.properties
+
+# Local configuration files
+android/local.properties
+.env*
+
 # Flutter/Dart/Pub related
 **/doc/api/
 **/ios/Flutter/.last_build_id

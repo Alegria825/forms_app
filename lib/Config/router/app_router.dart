@@ -1,8 +1,6 @@
 import 'package:forms_app/domain/entities/classroom.dart';
 import 'package:forms_app/presentation/blocs/auth_cubit/auth_cubit.dart';
 import 'package:forms_app/presentation/blocs/auth_cubit/auth_state.dart';
-import 'package:forms_app/presentation/screens/classroom_deteail_screen.dart';
-import 'package:forms_app/presentation/screens/new_classroom_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:forms_app/presentation/screens/screens.dart';
 import 'dart:async';
@@ -77,6 +75,10 @@ GoRouter createRouter(AuthCubit authCubit) {
           return ClassroomDetailScreen(classroom: classroom);
         },
       ),
+      GoRoute(
+        path: '/scanner',
+        builder: (context, state) => const ScannerScreen(),
+      )
     ],
   );
 }

@@ -1,4 +1,5 @@
-import 'dart:async'; 
+import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Importante para el StreamBuilder
 import 'package:flutter/material.dart';
 import 'package:forms_app/domain/entities/classroom.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -8,7 +9,6 @@ class ClassroomDetailScreen extends StatelessWidget {
 
   const ClassroomDetailScreen({super.key, required this.classroom});
 
-  // Función para mostrar el QR (se quitó el parámetro qrData porque el diálogo lo genera solo)
   void _showQrDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -21,6 +21,9 @@ class ClassroomDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final now = DateTime.now();
     final displayDate = "${now.day.toString().padLeft(2, '0')}-${now.month.toString().padLeft(2, '0')}-${now.year}";
+    
+    // Formato del ID del documento de hoy: DD_MM_YYYY
+    final String dateDocId = "${now.day.toString().padLeft(2, '0')}_${now.month.toString().padLeft(2, '0')}_${now.year}";
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -43,11 +46,22 @@ class ClassroomDetailScreen extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           
+          // --- SINCRONIZACIÓN EN TIEMPO REAL ---
           Expanded(
-            child: ListView.builder(
-              itemCount: classroom.uidStudents.isEmpty ? 1 : classroom.uidStudents.length,
-              itemBuilder: (context, index) {
-                if (classroom.uidStudents.isEmpty) {
+            child: StreamBuilder<DocumentSnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('classrooms')
+                  .doc(classroom.id)
+                  .collection('attendances')
+                  .doc(dateDocId)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                // Si el documento no existe, nadie ha pasado lista hoy
+                if (!snapshot.hasData || !snapshot.data!.exists) {
                   return const Center(
                     child: Padding(
                       padding: EdgeInsets.all(20.0),
@@ -59,9 +73,39 @@ class ClassroomDetailScreen extends StatelessWidget {
                     ),
                   );
                 }
-                return ListTile(
-                  leading: const Icon(Icons.person),
-                  title: Text(classroom.uidStudents[index]),
+
+                final data = snapshot.data!.data() as Map<String, dynamic>;
+                final List<String> presentUids = List<String>.from(data['present_students'] ?? []);
+
+                if (presentUids.isEmpty) {
+                  return const Center(child: Text("Lista vacía"));
+                }
+
+                return ListView.builder(
+                  itemCount: presentUids.length,
+                  itemBuilder: (context, index) {
+                    final uid = presentUids[index];
+
+                    // Buscamos el nombre del alumno por su UID
+                    return FutureBuilder<DocumentSnapshot>(
+                      future: FirebaseFirestore.instance.collection('users').doc(uid).get(),
+                      builder: (context, userSnapshot) {
+                        if (!userSnapshot.hasData) return const ListTile(title: Text("Cargando..."));
+                        
+                        final userData = userSnapshot.data!.data() as Map<String, dynamic>?;
+                        final String studentName = userData?['name'] ?? 'Usuario Desconocido';
+
+                        return ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.teal[50],
+                            child: Icon(Icons.person, color: Colors.teal[400]),
+                          ),
+                          title: Text(studentName, style: const TextStyle(fontWeight: FontWeight.w500)),
+                          trailing: const Icon(Icons.check_circle, color: Colors.green),
+                        );
+                      },
+                    );
+                  },
                 );
               },
             ),
@@ -72,13 +116,13 @@ class ClassroomDetailScreen extends StatelessWidget {
         backgroundColor: Colors.teal[400],
         icon: const Icon(Icons.qr_code_2, color: Colors.white),
         label: const Text("Mostrar QR", style: TextStyle(color: Colors.white)),
-        onPressed: () => _showQrDialog(context), // Corregido: ya no pasa qrData
+        onPressed: () => _showQrDialog(context),
       ),
     );
   }
 }
 
-// Widget del Diálogo Dinámico (Stateful para manejar el tiempo)
+// Widget del Diálogo Dinámico (Sin cambios, manteniendo tus correcciones de Layout)
 class _DynamicQrDialog extends StatefulWidget {
   final Classroom classroom;
   const _DynamicQrDialog({required this.classroom});
@@ -115,19 +159,16 @@ class _DynamicQrDialogState extends State<_DynamicQrDialog> {
 
   @override
   Widget build(BuildContext context) {
-    // Usamos un SizedBox para darle dimensiones exactas al contenido del Dialog
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       title: const Text('Asistencia Dinámica', textAlign: TextAlign.center),
-      content: SizedBox( // <--- Agregamos este SizedBox con ancho definido
+      content: SizedBox(
         width: 300, 
         child: Column(
-          mainAxisSize: MainAxisSize.min, // Importante para que no ocupe toda la pantalla
+          mainAxisSize: MainAxisSize.min,
           children: [
             const Text("Pide a tus alumnos que escaneen el código", textAlign: TextAlign.center),
             const SizedBox(height: 20),
-            
-            // Envolvemos el QR en un Container con medidas fijas para evitar el error de LayoutBuilder
             Container(
               width: 250,
               height: 250,
@@ -136,10 +177,8 @@ class _DynamicQrDialogState extends State<_DynamicQrDialog> {
                 data: _qrData,
                 version: QrVersions.auto,
                 size: 250.0,
-                // gapless: true, // Ayuda con la estabilidad visual al cambiar
               ),
             ),
-            
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
